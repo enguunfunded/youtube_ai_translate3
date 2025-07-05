@@ -1,22 +1,19 @@
 import pysrt
 import os
 
-def generate_srt(text, duration_per_line=5):
+def generate_srt(translated_segments):
     os.makedirs("output", exist_ok=True)
-    lines = text.split('. ')
     subs = pysrt.SubRipFile()
-    for i, line in enumerate(lines):
-        start = i * duration_per_line
-        end = start + duration_per_line
+
+    for i, seg in enumerate(translated_segments):
         subs.append(pysrt.SubRipItem(
             index=i+1,
-            start=pysrt.SubRipTime(seconds=start),
-            end=pysrt.SubRipTime(seconds=end),
-            text=line.strip()
+            start=pysrt.SubRipTime(seconds=seg['start']),
+            end=pysrt.SubRipTime(seconds=seg['end']),
+            text=seg['text'].strip()
         ))
-    srt_path = 'output/subtitles.srt'
 
-    # 👇 UTF-8 encoding-оор хадгална
+    srt_path = 'output/subtitles.srt'
     with open(srt_path, "w", encoding="utf-8") as f:
         subs.write_into(f)
 
