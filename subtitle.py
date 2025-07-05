@@ -15,5 +15,9 @@ def generate_srt(text, duration_per_line=5):
             text=line.strip()
         ))
     srt_path = 'output/subtitles.srt'
-    subs.save(srt_path, encoding='utf-8')
+
+    # 👇 UTF-8 encoding-оор хадгална
+    with open(srt_path, "w", encoding="utf-8") as f:
+        subs.write_into(f)
+
     return srt_path
